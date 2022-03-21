@@ -25,20 +25,31 @@ first_val = triangle[0][0]
 total = first_val
 totals_list = []
 num_of_rows = len(triangle)
-permutations = []
+list_of_rows = [*range(0,num_of_rows,1)]
+print(list_of_rows)
+permutations_of_tuples = []
+permutations_of_lists = []
 
-#Attempting to list all permutations of 1 and 0 of height of the triangle
-for element in list(itertools.permutations([1,2,3])):
-    permutations.append(element)
+#Attempting to list all permutations of indexes of list and remove lists who's consecutive items wouldn't be agecent in the triangle
+#problem is that the solution takes up too much memory for the size of the triangle given
+for element in list(itertools.permutations(list_of_rows)):
+    permutations_of_tuples.append(element)
 
-for perm_list in permutations:
-    for i in range(1,4):
-        for val in perm_list:
-            if val == i:
-                x = 0
-            else:
-                x=1
-        print(perm_list)
+for tup in permutations_of_tuples:
+    permutations_of_lists.append(list(tup))
+
+for perm_list in permutations_of_lists:
+    print(type(perm_list))
+    previous_val = perm_list[0]
+    current_val = perm_list[0]
+    for val in perm_list:
+        current_val = val
+        if current_val != previous_val or previous_val + 1 != current_val:
+            permutations_of_lists.remove(perm_list)
+        previous_val = val
+
+for perm_list in permutations_of_lists:
+    print(perm_list)
 
 """
 for row in triangle[1:]:
