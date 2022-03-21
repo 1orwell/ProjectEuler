@@ -29,26 +29,21 @@ num_of_rows = len(triangle)
 permutations_of_tuples = []
 permutations_of_lists = []
 
-#Attempting to list all permutations of 1 and 0 of height of the triangle
-for element in list(itertools.permutations([1, 2, 3, 4, 5])):
+#Attempting to list all permutations of the indexes
+for element in list(itertools.permutations([1, 2, 3, 4, 5,6,7,8,9,10])):
     permutations_of_tuples.append(element)
 
 for tup in permutations_of_tuples:
     permutations_of_lists.append(list(tup))
 
-for element in permutations_of_lists:
-    print(element)
-
 index=0
+#Removing any permutations that mean the value taken from the triangle wouldn't be agacent to the item above
 for perm_list in permutations_of_lists:
-    print(type(perm_list))
     previous_val = perm_list[0]
     current_val = perm_list[0]
     for val in perm_list:
         current_val = val
         if current_val != previous_val or previous_val + 1 != current_val:
-            if perm_list in permutations_of_lists:
-                print("True")
             del permutations_of_lists[index]
         previous_val = val
     index += 1
@@ -68,7 +63,6 @@ for row in triangle[1:]:
 
 print(total)
 """
-
     
         
     
