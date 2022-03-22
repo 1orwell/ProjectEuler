@@ -1,5 +1,6 @@
 #work in progress
 #Need to redo entire approach - perhaps use depth first search of tree
+#rewrite triangle as an adjacency list
 
 import itertools
 
