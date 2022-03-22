@@ -1,6 +1,6 @@
 #work in progress
-#Need to redo entire approach - perhaps use depth first search of tree
-#rewrite triangle as an adjacency list
+#Need to redo entire approach - currently reseraching dynamic programming
+
 
 import itertools
 
