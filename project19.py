@@ -1,4 +1,4 @@
-# WORK IN PROGRESS 
+# Includes 1900!! Just remove this.
 
 days_per_month = {'jan': 31, 'feb': 28, 'mar': 31, 'apr': 30, 'may': 31,
  'jun': 30, 'jul': 31, 'aug': 31, 'sep': 30, 'oct': 31, 'nov': 30, 'dec': 31}
@@ -27,7 +27,6 @@ def day_next_month_begins(year, prev_month, current_start_day):
             days_in_month = 28
     else:
         days_in_month = month_map[prev_month]
-    print(f'This has has {days_in_month} days.')
 
     days_over = days_in_month % 7
     # %7 makes it loop back to 0 for Monday
@@ -42,8 +41,9 @@ for year in range(1900, 2001):
         # 1900 is divisible by 4, but not 400, therefore not a leap year.
         print(year, month_map_day[month])
         print(f'This month starts on a {day_map[start_day]}')
-        start_day = day_next_month_begins(year, month, start_day)
         if start_day == 6:
             total_sundays += 1
+            print(f'The start of this month is a Sunday, {total_sundays} Sundays so far.')
+        start_day = day_next_month_begins(year, month, start_day)
 
 print(total_sundays)
