@@ -1,3 +1,5 @@
+from collections import Counter
+
 def translate_file(filename):
     player1 = {}
     player2 = {}
@@ -19,9 +21,19 @@ def translate_file(filename):
                         play = []
     return (player1, player2)
 
+def check(hand):
+    lst_val = []
+    lst_suits = []
+    for card in hand:
+        lst_val.append(card[0])
+        lst_suits.append(card[1])
+    counter_suits = Counter(lst_suits)
+    if 'T' and 'J' and 'Q' and 'K' and 'A' in lst_val:
+        if len(counter_suits) == 1:
+            return('Royal Flush')
+    
+
 (player1, player2) = translate_file('p054_poker.txt')
-#print(f'The dictionary for player1 hand is: {player1}\n')
-#print(f'The dictionary for player2 hand is: {player2}\n')
 
 for i in range(1, 1001):
     print(f'The round is {i}')
