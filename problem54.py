@@ -52,9 +52,9 @@ def return_highest(hand):
 def check_straight(hand):
     sorted_vals = sort(hand)
     in_order = True
-    previous = int(sorted_vals[0])
+    # must subtract 1 as adding 1 and checking at beginning of for loop
+    previous = sorted_vals[0]-1
     for val in sorted_vals:
-        print(val)
         if previous + 1 != int(val):
             in_order = False
             break
@@ -75,7 +75,7 @@ def check(hand):
     suits_vals = counter_suits.values() 
 
     # Check for Royal Flush
-    if 'T' and 'J' and 'Q' and 'K' and 'A' in lst_val:
+    if all(x in lst_val for x in ['T', 'J', 'Q', 'K', 'A']):
         if len(counter_suits) == 1:
             return(0)
 
@@ -91,7 +91,7 @@ def check(hand):
 
     # Check for full house
     if 2 in vals_check and 3 in vals_check:
-            return(3)
+        return(3)
 
     # Check for flush.
     if 5 in suits_vals:
@@ -120,13 +120,12 @@ def check(hand):
         return(8)
 
     return(9)
-    
-(player1, player2) = translate_file('p054_poker.txt')
 
 wins1 = 0
 wins2 = 0
 draw = 0
 
+(player1, player2) = translate_file('p054_poker.txt')
 for i in range(1, 1001):
     print(f'The round is {i}')
     hand1 = check(player1[i])
@@ -156,4 +155,24 @@ for i in range(1, 1001):
 
 print(f'Player 1 has won {wins1} times.')
 print(f'Player 2 has won {wins2} times.')
-print(f'Draws has won {draw} times.')
+
+royal_flush = ['TS', 'JS', 'QS', 'KS', 'AS']
+print(f'Should say 0, {check(royal_flush)}')
+straight_flush = ['7S', '8S', 'TS', '9S', 'JS']
+print(f'Should say 1, {check(straight_flush)}')
+four_kind = ['7S', '7C', '7D', 'JH', '7S']
+print(f'Should say 2, {check(four_kind)}')
+full_house = ['7S', 'JC', '7D', 'JH', '7S']
+print(f'Should say 3, {check(full_house)}')
+flush = ['7S', 'JS', '1S', 'AS', 'TS']
+print(f'Should say 4, {check(flush)}')
+straight = ['1S', '3C', '2D', '5H', '4S']
+print(f'Should say 5, {check(straight)}')
+three_kind = ['1S', '3C', '1D', '1H', '4S']
+print(f'Should say 6, {check(three_kind)}')
+two_pairs = ['1S', '3C', '1D', '5H', '3S']
+print(f'Should say 7, {check(two_pairs)}')
+one_pair = ['1S', '3C', '1D', '5H', '4S']
+print(f'Should say 8, {check(one_pair)}')
+nothing = ['1S', '3C', '9D', '5H', '4S']
+print(f'Should say 9, {check(nothing)}')
