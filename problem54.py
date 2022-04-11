@@ -41,6 +41,24 @@ def sort(hand):
     sorted_vals = sorted(lst_val)
     return sorted_vals
 
+def sort_no_suits(lst_val):
+    lst_val = lst_val[0]
+    for i, val in enumerate(lst_val):
+        if val == 'T':
+            lst_val[i] = 10
+        if val == 'J':
+            lst_val[i] = 11
+        if val == 'Q':
+            lst_val[i] = 12
+        if val == 'K':
+            lst_val[i] = 13
+        if val == 'A':
+            lst_val[i] = 14
+    for i, val in enumerate(lst_val):
+        lst_val[i] = int(val)
+    sorted_vals = sorted(lst_val)
+    return max(sorted_vals)
+
 def return_highest(hand):
     sorted_val = sort(hand)
     tmp = 0
@@ -126,7 +144,7 @@ wins2 = 0
 draw = 0
 
 (player1, player2) = translate_file('p054_poker.txt')
-for i in range(1, 5):
+for i in range(1, 1001):
     print(f'The round is {i}')
     (hand1, vals1, suits1)  = check(player1[i])
     (hand2, vals2, suits2) = check(player2[i])
@@ -145,14 +163,14 @@ for i in range(1, 5):
         player2_highest =  return_highest(player2[i])
         #must check highest card
         print(f'Must check highest card.')
-        if hand1 == 9 or hand1 == 1: # no pattern, or both straight flush
+        if hand1 == 9 or hand1 == 1 or hand1 == 4 or hand1 == 5: # no pattern, or both straight flush, or flush, or straight
             if player1_highest > player2_highest:
                 print('Player 1 wins.')
                 wins1 += 1
             if player2_highest > player1_highest:
                 print('Player 2 wins.')
                 wins2 += 1
-        elif hand1 == 2: # four of a kind for both
+        elif hand1 == 2 or hand1 == 3 or hand1 == 6 or hand1 == 8: # four of a kind for both, or three of a kind, or a pair
             highest1 = vals1.most_common(1)[0][0]
             highest1 = sort([highest1])[0]
             highest2 = vals2.most_common(1)[0][0]
@@ -163,9 +181,26 @@ for i in range(1, 5):
             if highest2 > highest1:
                 print('Player 2 wins.')
                 wins2 += 1
+        elif hand1 == 7: # both have two pairs
+            highest1 = vals1.most_common(2)
+            highest1 = [x[0] for x in highest1]
+            highest1 = sort_no_suits([highest1])
+            highest2 = vals2.most_common(2)
+            highest2 = [x[0] for x in highest2]
+            highest2 = sort_no_suits([highest2])
+            if highest1 > highest2:
+                print('Player 1 wins.')
+                wins1 += 1
+            if highest2 > highest1:
+                print('Player 2 wins.')
+                wins2 += 1
+            
+
 
 print(f'Player 1 has won {wins1} times.')
 print(f'Player 2 has won {wins2} times.')
+
+'''
 
 royal_flush = ['TS', 'JS', 'QS', 'KS', 'AS']
 print(f'Should say 0, {check(royal_flush)}')
@@ -187,3 +222,5 @@ one_pair = ['1S', '3C', '1D', '5H', '4S']
 print(f'Should say 8, {check(one_pair)}')
 nothing = ['1S', '3C', '9D', '5H', '4S']
 print(f'Should say 9, {check(nothing)}')
+
+'''
