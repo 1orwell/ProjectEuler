@@ -131,20 +131,28 @@ for i in range(1, 1001):
     print(f'The round is {i}')
     hand1 = check(player1[i])
     hand2 = check(player2[i])
-    if hand1 == hand2:
-        #must check highest card
-        print(f'Must check highest card.')
-        hand1 =  return_highest(player1[i])
-        hand2 =  return_highest(player2[i])
-    if hand1 > hand2:
+    print(f'Player 1 has hand {player1[i]}')
+    print(f'The check is {hand1}')
+    print(f'Player 2 has hand {player2[i]}')
+    print(f'The check is {hand2}')
+    if hand1 < hand2:
         print('Player 1 wins.')
         wins1 += 1
-    elif hand2 > hand1:
+    elif hand2 < hand1:
         print('Player 2 wins.')
         wins2 += 1
     else:
-        print('No winner.')
-        draw += 1
+        #must check highest card
+        print(f'Must check highest card.')
+        player1_highest =  return_highest(player1[i])
+        player2_highest =  return_highest(player2[i])
+        if player1_highest > player2_highest:
+            print('Player 1 wins.')
+            wins1 += 1
+        if player2_highest > player1_highest:
+            print('Player 2 wins.')
+            wins2 += 1
+
 
 print(f'Player 1 has won {wins1} times.')
 print(f'Player 2 has won {wins2} times.')
