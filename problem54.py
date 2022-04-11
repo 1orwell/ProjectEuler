@@ -77,34 +77,34 @@ def check(hand):
     # Check for Royal Flush
     if all(x in lst_val for x in ['T', 'J', 'Q', 'K', 'A']):
         if len(counter_suits) == 1:
-            return(0)
+            return(0, vals_check, suits_vals)
 
     # Check straight flush
     if len(counter_suits) == 1:
         in_order = check_straight(lst_val)
         if in_order == True:
-            return(1)
+            return(1, counter_vals, counter_suits)
 
     # Check for four of a kind.
     if 4 in vals_check:
-        return(2)
+        return(2, counter_vals, counter_suits)
 
     # Check for full house
     if 2 in vals_check and 3 in vals_check:
-        return(3)
+        return(3, counter_vals, counter_suits)
 
     # Check for flush.
     if 5 in suits_vals:
-        return(4)
+        return(4, counter_vals, counter_suits) 
 
     # Check for straight.
     in_order = check_straight(lst_val)
     if in_order == True:
-        return(5)
+        return(5, counter_vals, counter_suits)
 
     # Check for three of a kind
     if 3 in vals_check:
-        return(6)
+        return(6, counter_vals, counter_suits)
 
     # Check for two pairs 
     if 2 in vals_check:
@@ -113,23 +113,23 @@ def check(hand):
             if val == 2:
                 counter += 1
         if counter == 2:
-            return(7)
+            return(7, counter_vals, counter_suits)
 
     # Check for one pair 
     if 2 in vals_check:
-        return(8)
+        return(8, counter_vals, counter_suits)
 
-    return(9)
+    return(9, counter_vals, counter_suits)
 
 wins1 = 0
 wins2 = 0
 draw = 0
 
 (player1, player2) = translate_file('p054_poker.txt')
-for i in range(1, 1001):
+for i in range(1, 5):
     print(f'The round is {i}')
-    hand1 = check(player1[i])
-    hand2 = check(player2[i])
+    (hand1, vals1, suits1)  = check(player1[i])
+    (hand2, vals2, suits2) = check(player2[i])
     print(f'Player 1 has hand {player1[i]}')
     print(f'The check is {hand1}')
     print(f'Player 2 has hand {player2[i]}')
@@ -141,17 +141,28 @@ for i in range(1, 1001):
         print('Player 2 wins.')
         wins2 += 1
     else:
-        #must check highest card
-        print(f'Must check highest card.')
         player1_highest =  return_highest(player1[i])
         player2_highest =  return_highest(player2[i])
-        if player1_highest > player2_highest:
-            print('Player 1 wins.')
-            wins1 += 1
-        if player2_highest > player1_highest:
-            print('Player 2 wins.')
-            wins2 += 1
-
+        #must check highest card
+        print(f'Must check highest card.')
+        if hand1 == 9 or hand1 == 1: # no pattern, or both straight flush
+            if player1_highest > player2_highest:
+                print('Player 1 wins.')
+                wins1 += 1
+            if player2_highest > player1_highest:
+                print('Player 2 wins.')
+                wins2 += 1
+        elif hand1 == 2: # four of a kind for both
+            highest1 = vals1.most_common(1)[0][0]
+            highest1 = sort([highest1])[0]
+            highest2 = vals2.most_common(1)[0][0]
+            highest2 = sort([highest2])[0]
+            if highest1 > highest2:
+                print('Player 1 wins.')
+                wins1 += 1
+            if highest2 > highest1:
+                print('Player 2 wins.')
+                wins2 += 1
 
 print(f'Player 1 has won {wins1} times.')
 print(f'Player 2 has won {wins2} times.')
