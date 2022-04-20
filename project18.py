@@ -1,13 +1,10 @@
 #work in progress
-#Need to redo entire approach - currently reseraching dynamic programming
-
-
 import itertools
 
-
+"""
 triangle = [[75],
 [95,64],
-[17,47,826],
+[17,47,82],
 [18,35,87,10],
 [20, 4,82,47,65],
 [19,1, 23, 75, 3, 34],
@@ -21,7 +18,11 @@ triangle = [[75],
 [63, 66, 4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31],
 [4, 62, 98, 27, 23, 9, 70, 98, 73, 93, 38, 53, 60, 4, 23]
 ]
+"""
 
+triangle = [[75],
+[95,64],
+[17,47,82]]
 
 previous_index = 0
 first_val = triangle[0][0]
@@ -33,7 +34,9 @@ permutations_of_tuples = []
 permutations_of_lists = []
 
 #Attempting to list all permutations of the indexes
-for element in list(itertools.permutations([0,1,2,3,4])):
+lst = [0, 1, 2]
+#for element in list(itertools.permutations(lst, repeat=len(lst))):
+for element in list(itertools.product(lst, repeat=len(lst))):
     permutations_of_tuples.append(element)
 
 for tup in permutations_of_tuples:
@@ -41,57 +44,48 @@ for tup in permutations_of_tuples:
     if tup[0] == 0:
         permutations_of_lists.append(list(tup))
 
+lst_to_remove = []
+
+# For some reason, this is skipping out the some possible permutation?
+# Of the permutations 0-23, only check indexes 0,1,4,7,12,16,19 - why????
 for perm_list in permutations_of_lists:
-    print(perm_list)
-
-
-#Removing any permutations that mean the value taken from the triangle wouldn't be agacent to the item above
-# I can hear my computer whir when it gets to this point
-# For some reason, this is skipping out the third possible permutation? Possible indexing error?
-for index, perm_list in enumerate(permutations_of_lists):
-    print("in list " + str(perm_list) + " of the list of permutations")
     previous_val = perm_list[0]
     for current_val in perm_list:
         remove = True
-        print("val is "+str(current_val))
-        print(f"this should either be {str(previous_val)} or 1 more than it.")
         if previous_val == current_val:
-            print("Good value.")
             remove = False 
         if previous_val + 1 == current_val:
-            print("Good value.")
             remove = False
         if remove == True:
-            del permutations_of_lists[index]
-            print("Removing permutation option.")
-            #break
+            lst_to_remove.append(perm_list)
+            break
         previous_val = current_val
 
-for perm_list in permutations_of_lists:
-    print(perm_list)
-"""
+for wrong_perm in lst_to_remove:
+    permutations_of_lists.remove(wrong_perm)
+
 for perm_list in permutations_of_lists:
     print(perm_list)
 
-    index=0
-    for val in perm_list:
-        current_val = val
-        if current_val != previous_val or previous_val + 1 != current_val:
-            del permutations_of_lists[index]
-        previous_val = val
-        index += 1
-for perm_list in permutations_of_lists:
-    print(perm_list)
-
-for row in triangle[1:]:
-    val_a = row[previous_index]
-    val_b = row[previous_index+1]
-    if val_a > val_b:
-        previous_index = previous_index
-    else:
-        previous_index = previous_index+1
-    total = total + max(val_a,val_b)
-print(total)
-        
-    
 """
+We have now worked out every possible path along the triangle, we now just have to add each one and
+keep track of the largest.
+"""
+
+total = 0
+max = 0
+
+for path in permutations_of_lists:
+    for index, row in enumerate(triangle):
+        print(f'looking at row {row} and taking {path}')
+        index_in_row = path[index]
+        val = row[index_in_row]
+        print(f'The value to be added is {val}')
+        total += val
+        print(f'The total is now {total}')
+    if total > max:
+        max = total
+    total = 0
+
+print(max)
+
