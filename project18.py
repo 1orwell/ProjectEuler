@@ -23,17 +23,11 @@ triangle = [[75],
 triangle = [[75],
 [95,64],
 [17,47,82]]
-
-previous_index = 0
-first_val = triangle[0][0]
-total = first_val
-totals_list = []
-num_of_rows = len(triangle)
-#list_of_rows = [*range(0,num_of_rows,1)]
 permutations_of_tuples = []
 permutations_of_lists = []
 
 #Attempting to list all permutations of the indexes
+#lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 lst = [0, 1, 2]
 #for element in list(itertools.permutations(lst, repeat=len(lst))):
 for element in list(itertools.product(lst, repeat=len(lst))):
@@ -80,9 +74,7 @@ for path in permutations_of_lists:
         print(f'looking at row {row} and taking {path}')
         index_in_row = path[index]
         val = row[index_in_row]
-        print(f'The value to be added is {val}')
         total += val
-        print(f'The total is now {total}')
     if total > max:
         max = total
     total = 0
